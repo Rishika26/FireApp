@@ -4,5 +4,6 @@ data class CNote(
 //    models
     val uid: String = "",
     val content: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    val title: String = "",
+    val importance: Int = 0,
 )

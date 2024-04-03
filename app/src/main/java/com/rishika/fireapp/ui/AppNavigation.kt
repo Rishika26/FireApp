@@ -28,11 +28,19 @@ fun AppNavigation() {
             LoginScreen(state = vm.state.collectAsState().value, onEvent = vm::onEvent,
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route)
                 })
         }
         composable(Screen.Register.route){
             val vm: RegisterViewModel = viewModel()
-            RegisterScreen(state = vm.state.collectAsState().value, onEvent = vm::onEvent)
+            RegisterScreen(
+                state = vm.state.collectAsState().value,
+                onEvent = vm::onEvent,
+                onBack = {
+                    navController.popBackStack()
+                })
         }
         composable(Screen.Home.route){
 

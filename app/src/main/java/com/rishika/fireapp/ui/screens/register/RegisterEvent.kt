@@ -7,5 +7,6 @@ sealed class RegisterEvent {
     data class SetPassword(val password: String): RegisterEvent()
     data class SetConfirmPassword(val confirmPassword: String): RegisterEvent()
     data object OnSaveUser: RegisterEvent()
-    data object OnNavigateToLogin: RegisterEvent()
+    data object ClearError: RegisterEvent()
+
 }

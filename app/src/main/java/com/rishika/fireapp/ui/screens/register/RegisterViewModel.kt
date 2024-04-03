@@ -2,22 +2,27 @@ package com.rishika.fireapp.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import com.rishika.fireapp.service.AuthService
-import com.rishika.fireapp.ui.screens.login.LoginEvent
-import com.rishika.fireapp.ui.screens.login.LoginState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class RegisterViewModel(): ViewModel() {
+class RegisterViewModel(
+    private val authService:AuthService = AuthService()
+): ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
-    private val authService = AuthService()
+
 
     fun onEvent(event: RegisterEvent) {
         when (event) {
-            RegisterEvent.OnNavigateToLogin -> TODO()
             RegisterEvent.OnSaveUser -> {
-                authService.register(state.value)
+                try {
+                    authService.register(_state)
+                } catch (e: Exception) {
+                    _state.update {
+                        it.copy(error = e.message ?: "An error occurred")
+                    }
+                }
             }
             is RegisterEvent.SetConfirmPassword -> {
                 _state.update { it.copy(confirmPassword = event.confirmPassword) }
@@ -31,6 +36,8 @@ class RegisterViewModel(): ViewModel() {
             is RegisterEvent.SetUsername -> {
                 _state.update { it.copy(username = event.username) }
             }
+
+            RegisterEvent.ClearError -> TODO()
         }
     }
 }

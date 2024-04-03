@@ -1,5 +1,6 @@
 package com.rishika.fireapp.ui.screens.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,11 @@ fun LoginScreen(
     state: LoginState = LoginState(),
     onEvent: (LoginEvent) -> Unit = {},
     onNavigateToRegister: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
 ) {
+    if (state.isLoginSuccess) {
+        onNavigateToHome()
+    }
     Box(modifier = Modifier
         .fillMaxSize()
         .background(
@@ -39,7 +45,11 @@ fun LoginScreen(
         ),
         contentAlignment = Alignment.Center) {
         Column {
-            Text(text = "Login to Fire App")
+            Text(text = "Login to Fire App", style = MaterialTheme.typography.headlineMedium)
+            AnimatedVisibility(visible = state.error.isNotBlank()) {
+                Text(text = state.error, color = Color.Red)
+
+            }
             OutlinedTextField(value = state.email,
                 onValueChange = {onEvent(LoginEvent.SetEmail(it))},
                 placeholder = { Text("Email")}
@@ -58,7 +68,8 @@ fun LoginScreen(
                 colors = ButtonDefaults.elevatedButtonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                ),
+                enabled = !state.isLoading,
             ) {
                 Text(text = "Login")
             }

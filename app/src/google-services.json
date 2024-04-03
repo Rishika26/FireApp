@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "764855284570",
+    "project_id": "fireapp-cb4d5",
+    "storage_bucket": "fireapp-cb4d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764855284570:android:bf28b8848cd836a2c63963",
+        "android_client_info": {
+          "package_name": "com.rishika.fireapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEOavQWw4rTfAe-6eKRcPygMO0JUFC_bE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
