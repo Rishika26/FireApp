@@ -62,7 +62,9 @@ class DocViewModel(
                         db.collection(COLL_UPLOADS)
                             .add(doc)
                             .addOnSuccessListener {
-                                _state.update { it.copy(uploadStatus = UploadStatus.SUCCESS) }
+                                _state.update {state-> state.copy(uploadStatus = UploadStatus.SUCCESS)
+                                }
+                                loadDocuments()
                             }
                             .addOnFailureListener {
                                 _state.update {_state ->

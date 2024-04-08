@@ -13,10 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledIconButton
@@ -36,6 +38,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 
@@ -54,6 +58,24 @@ fun DocScreen(
         Column(modifier = Modifier.padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            LazyHorizontalGrid(
+                rows = GridCells.Adaptive(100.dp),
+                modifier = Modifier.fillMaxWidth()) {
+                item {
+                    if(state.documentStatus == DocumentStatus.LOADING){
+                        CircularProgressIndicator()
+                    }
+                }
+                items(state.documents){doc ->
+                    Card {
+                        AsyncImage(model = doc.url,
+                            contentDescription = doc.name,
+                            modifier = Modifier.size(100.dp)
+                        )
+                    }
+                }
+
+            }
             result.value?.let { image ->
                 //Use Coil to display the selected image
                 val painter = rememberAsyncImagePainter(
@@ -63,10 +85,7 @@ fun DocScreen(
                         .build()
                 )
 
-                LazyHorizontalGrid(rows = GridCells.Fixed(2)) {
 
-
-                }
                 Box {
                     Image(
                         painter = painter,
