@@ -5,5 +5,5 @@ data class CNote(
     val uid: String = "",
     val content: String = "",
     val title: String = "",
-    val importance: Int = 0,
+    val importance: String = "0",
 )

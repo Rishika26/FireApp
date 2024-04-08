@@ -24,6 +24,9 @@ class HomeViewModel(
     init {
         loadAllNotes()
         loadAllUploads()
+        _state.update {
+            it.copy(username = auth.currentUser?.displayName ?: "Guest" )
+        }
     }
 
     fun onEvent(event: HomeEvent){
@@ -32,11 +35,29 @@ class HomeViewModel(
     private fun loadAllNotes(){
         db.collection(COLL_NOTES)
             .get()
-            .addOnFailureListener {
+            .addOnFailureListener {e->
                 //handle and display error
+                _state.update {
+                    it.copy(error = e.message ?: "An error occurred",
+                        noteListState = NoteListState.ERROR,
+                        totalNotes = 0,
+                    )
+                }
             }
-            .addOnSuccessListener {
+            .addOnSuccessListener { data->
                 //extract all data to an array list and update the state
+                val tempNotes = mutableListOf<CNote>()
+                for (doc in data){
+                    val note = doc.toObject(CNote::class.java)
+                    tempNotes.add(note)
+                }
+                _state.update {
+                    it.copy(notes = tempNotes,
+                        noteListState = NoteListState.SUCCESS,
+                        totalNotes = tempNotes.size,
+                        error = ""
+                    )
+                }
             }
     }
 

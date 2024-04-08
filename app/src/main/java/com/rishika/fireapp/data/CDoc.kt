@@ -4,6 +4,6 @@ data class CDoc(
     val uid: String = "",
     val url: String = "",
     val name: String = "",
-    val mimetype: String = "",
+    val mimeType: String = "",
     val timestamp: Long = System.currentTimeMillis()
 )
